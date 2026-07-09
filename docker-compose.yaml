@@ -1,0 +1,27 @@
+services:
+  app:
+    build:
+      context: ./project-name
+      dockerfile: Dockerfile
+      target: development
+    image: infra-project-name:dev
+    container_name: infra-project-name
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./project-name:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      CHOKIDAR_USEPOLLING: "true"
+    command: npm run start:dev
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "require('http').get('http://127.0.0.1:3000', r => process.exit(r.statusCode < 500 ? 0 : 1)).on('error', () => process.exit(1))"
+      interval: 10s
+      timeout: 3s
+      retries: 5
