@@ -38,5 +38,5 @@ jobs:
         working-directory: project-name
         run: npm run build
  
- -name: Build docker image
+      - name: Build docker image
         run: docker build -t infra-project-name:dev -f project-name/Dockerfile --target development project-name
