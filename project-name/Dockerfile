@@ -1,25 +1,26 @@
-FROM node:24-alpine AS base
+FROM node:24-alpine AS build
 
 WORKDIR /app
 
-FROM base AS dependencies
-COPY package*.json ./
+COPY project-name/package*.json ./
+
 RUN npm install
 
-FROM dependencies AS development
-COPY . .
-EXPOSE 3000
-CMD ["npm", "run", "start:dev"]
+COPY project-name/ .
 
-FROM dependencies AS build
-COPY . .
 RUN npm run build
-RUN npm prune --omit=dev
+RUN npm prune --omit=dev 
 
-FROM base AS production
+FROM node:24-alpine AS production
+
+WORKDIR /app
+
 ENV NODE_ENV=production
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/node_modules ./node_modules
+
 COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./package.json
+
 EXPOSE 3000
+
 CMD ["npm", "run", "start:prod"]
