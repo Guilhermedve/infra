@@ -1,0 +1,11 @@
+# Terraform local data and state
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfplan
+
+# Terraform CLI configuration may contain credentials
+.terraformrc
+terraform.rc
