@@ -27,7 +27,7 @@ resource "aws_iam_role" "github_actions" {
         Condition = {
           StringEquals = {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-            "token.actions.githubusercontent.com:sub" = "repo:Guilhermedve/infra:ref:refs/heads/main"
+            "token.actions.githubusercontent.com:sub" = "repo:Guilhermedve@217589707/infra@1295787607:ref:refs/heads/main"
           }
         }
       }
