@@ -11,6 +11,27 @@ resource "aws_iam_openid_connect_provider" "openidgit" {
     IAC = "Trust"
   }
 }
+resource "aws_iam_role" "app-runner-role" { 
+  name = "app-runner-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "build.apprunner.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+manage_policy_arns  {
+    "arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess"
+  }
+}
+
+
 
 resource "aws_iam_role" "github_actions" {
   name = "github-actions-ecr-role"
