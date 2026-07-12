@@ -46,7 +46,7 @@ jobs:
         if: github.event_name == 'push'
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-to-assume: arn:aws:iam::236578428540:role/github-actions-ecr-role
           aws-region: us-east-2
 
       - name: Login to Amazon ECR
@@ -60,7 +60,7 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: rocketseat-ci
           IMAGE_TAG: ${{ github.sha }}
-        run: docker build -t "$REGISTRY/$REPOSITORY:$IMAGE_TAG" -f project-name/Dockerfile project-name
+        run: docker build -t "$REGISTRY/$REPOSITORY:$IMAGE_TAG" -f project-name/Dockerfile .
 
       - name: Push Docker image
         if: github.event_name == 'push'
